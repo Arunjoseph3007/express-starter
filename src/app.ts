@@ -5,6 +5,8 @@ import morgan from "morgan";
 import helmet from "helmet";
 import Controller from "@/utils/interfaces/controller";
 import ErrorMiddleware from "@/middleware/error";
+import swaggerUI from "swagger-ui-express";
+const swaggerDocument = require("../swagger-output");
 
 //& Express Application
 export default class ExpressApplication {
@@ -18,7 +20,7 @@ export default class ExpressApplication {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
-    this.initializeBasicRoutes()
+    this.initializeBasicRoutes();
     this.initializeErrorHandling();
   }
 
@@ -35,15 +37,20 @@ export default class ExpressApplication {
   //$ Setup all resource controllers
   private initializeControllers(controllers: Controller[]): void {
     controllers.forEach((controller) => {
-      this.express.use("/api", controller.router);
+      this.express.use("/api" + controller.path, controller.router);
     });
   }
 
   //$ Some basic routes - welcome, docs, etc
-  private initializeBasicRoutes(){
-      this.express.get('/health-check',(req,res)=>{
-          res.json('Hey welcome to the api')
-      })
+  private initializeBasicRoutes() {
+    this.express.get("/health-check", (req, res) => {
+      res.json("Hey welcome to the api");
+    });
+    this.express.use(
+      "/api-docs",
+      swaggerUI.serve,
+      swaggerUI.setup(swaggerDocument)
+    );
   }
 
   //$ Error handling
