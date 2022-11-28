@@ -6,7 +6,7 @@
     "start": "node dist/index.js",
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
     "build": "tsc",
-    "doc": "node dist/utils/swagger.js"
+    "doc": "node swagger.js"
   },
   "license": "MIT",
   "devDependencies": {

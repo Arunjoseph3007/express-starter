@@ -1,17 +1,17 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Description",
+    "title": "Express Typescript starter",
+    "description": "An excellent starter setup with documentation using Swagger UI",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:8000",
   "basePath": "/",
   "schemes": [
     "http"
   ],
   "paths": {
-    "/": {
+    "/health-check": {
       "get": {
         "description": "",
         "parameters": [],
@@ -22,7 +22,18 @@
         }
       }
     },
-    "/{id}": {
+    "/api/books/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/books/{id}": {
       "get": {
         "description": "",
         "parameters": [

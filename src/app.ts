@@ -3,9 +3,11 @@ import compression from "compression";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import Controller from "@/utils/interfaces/controller";
 import ErrorMiddleware from "@/middleware/error";
 import swaggerUI from "swagger-ui-express";
+
+import BookController from "@/resources/books/routes";
+
 const swaggerDocument = require("../swagger-output");
 
 //& Express Application
@@ -14,12 +16,12 @@ export default class ExpressApplication {
   public port: number;
 
   //$ Driver code
-  constructor(controllers: Controller[], port: number) {
+  constructor( port: number) {
     this.express = express();
     this.port = port;
 
     this.initializeMiddlewares();
-    this.initializeControllers(controllers);
+    this.initializeControllers();
     this.initializeBasicRoutes();
     this.initializeErrorHandling();
   }
@@ -35,15 +37,14 @@ export default class ExpressApplication {
   }
 
   //$ Setup all resource controllers
-  private initializeControllers(controllers: Controller[]): void {
-    controllers.forEach((controller) => {
-      this.express.use("/api" + controller.path, controller.router);
-    });
+  private initializeControllers(): void {
+    this.express.use("/api/books", BookController.router);
   }
 
   //$ Some basic routes - welcome, docs, etc
   private initializeBasicRoutes() {
     this.express.get("/health-check", (req, res) => {
+      // # swagger.ignore=true
       res.json("Hey welcome to the api");
     });
     this.express.use(
