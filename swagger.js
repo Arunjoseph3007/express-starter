@@ -1,5 +1,4 @@
 const swaggerAutogen = require("swagger-autogen");
-const fs = require("fs");
 
 const doc = {
   info: {
@@ -9,12 +8,19 @@ const doc = {
   },
   host: "localhost:8000",
   schemes: ["http"],
+  definitions: {
+    Book: {
+      id: 1,
+      name: "Harry porter",
+      author: "J K Rowling",
+    },
+  },
 };
 
 const outputFile = "swagger-output.json";
 const endpointsFiles = [
   //$ Add any other file conatining express routes here
-  'src/app.ts',
+  "src/app.ts",
 ];
 
 swaggerAutogen()(outputFile, endpointsFiles, doc);

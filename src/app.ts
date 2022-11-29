@@ -5,8 +5,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import ErrorMiddleware from "@/middleware/error";
 import swaggerUI from "swagger-ui-express";
+import path from "path";
 
-import BookController from "@/resources/books/routes";
+import BookController from "@/resources/books/books.routes";
 
 const swaggerDocument = require("../swagger-output");
 
@@ -38,15 +39,16 @@ export default class ExpressApplication {
 
   //$ Setup all resource controllers
   private initializeControllers(): void {
-    this.express.use("/api/books", BookController.router);
+    this.express.use("/api/books", BookController.router /* #swagger.tags=['Book'] */);
   }
 
   //$ Some basic routes - welcome, docs, etc
   private initializeBasicRoutes() {
-    this.express.get("/health-check", (req, res) => {
+    this.express.use("/health-check", (req, res) => {
       // # swagger.ignore=true
       res.json("Hey welcome to the api");
     });
+    this.express.use(express.static(path.join(__dirname, '../public')))
     this.express.use(
       "/api-docs",
       swaggerUI.serve,

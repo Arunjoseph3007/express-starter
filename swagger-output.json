@@ -11,30 +11,71 @@
     "http"
   ],
   "paths": {
-    "/health-check": {
-      "get": {
+    "/api/books/": {
+      "post": {
+        "tags": [
+          "Book"
+        ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "author": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
-      }
-    },
-    "/api/books/": {
+      },
       "get": {
+        "tags": [
+          "Book"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
     },
     "/api/books/{id}": {
       "get": {
+        "tags": [
+          "Book"
+        ],
         "description": "",
         "parameters": [
           {
@@ -51,8 +92,33 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Harry porter"
+        },
+        "author": {
+          "type": "string",
+          "example": "J K Rowling"
         }
       }
     }

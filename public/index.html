@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Express Starter template</title>
+  </head>
+  <body>
+    <main>
+      <nav>
+        <div class="logo">Express Starter</div>
+        <div>
+          <a href="/api-docs">Api docs</a>
+        </div>
+      </nav>
+      <section>
+        <h1>A great starter template</h1>
+        <p>
+          A complete starter kit built with typescript, prisma and express.
+          Perfect for builtding Rest APIs
+        </p>
+        <div class="features-container">
+          <div class="features-item">
+            <h2>Express</h2>
+            <p>An easy to use backend framework written in Javascript</p>
+            <a href="https://express.docs.com">See docs &rArr;</a>
+          </div>
+          <div class="features-item">
+            <h2>Prisma</h2>
+            <p>An easy to use backend framework written in Javascript</p>
+            <a href="https://express.docs.com">See docs &rArr;</a>
+          </div>
+          <div class="features-item">
+            <h2>Swagger UI</h2>
+            <p>An easy to use backend framework written in Javascript</p>
+            <a href="https://express.docs.com">See docs &rArr;</a>
+          </div>
+          <div class="features-item">
+            <h2>Typescript</h2>
+            <p>An easy to use backend framework written in Javascript</p>
+            <a href="https://express.docs.com">See docs &rArr;</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: rgb(12, 12, 12);
+        color: white;
+      }
+      nav {
+        background-color: black;
+        color: white;
+        padding: 1rem;
+        padding-inline: 4rem;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      nav .logo {
+        max-width: 800px;
+        font-weight: bold;
+      }
+      nav a {
+        padding: 0.5rem 1rem;
+        color: white;
+        background-color: transparent;
+        font-size: 1rem;
+        text-decoration: none;
+        border: 3px solid white;
+        border-radius: 10px;
+      }
+      section {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        gap: 1rem;
+        align-items: center;
+      }
+      h1 {
+        font-size: 3rem;
+        margin-block: 1.2rem;
+      }
+      section p {
+        color: gray;
+        font-weight: lighter;
+      }
+      .features-container {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1fr 1fr;
+      }
+      .features-item {
+        width: 350px;
+        border: 3px solid white;
+        border-radius: 15px;
+        padding: 0.8rem;
+      }
+      .features-item h2 {
+        margin-bottom: 0.4rem;
+      }
+    </style>
+  </body>
+</html>
