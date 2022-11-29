@@ -64,7 +64,7 @@ export default class ExpressApplication {
   //$ Start
   public listen(): void {
     this.express.listen(this.port, () => {
-      console.log(`App running on Port:${this.port}`);
+      console.log(`App running at http://localhost:${this.port}`);
     });
   }
 }
