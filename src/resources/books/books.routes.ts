@@ -1,13 +1,8 @@
 import Controller from "@/utils/interfaces/controller";
 import { Router } from "express";
+import { ZBook, TBook } from "./books.types";
 
 const router = Router();
-
-type TBook = {
-  id: number;
-  name: string;
-  author: string;
-};
 
 const books: TBook[] = [
   { id: 1, name: "a good one", author: "t k rowling" },
@@ -18,6 +13,10 @@ const books: TBook[] = [
 
 router.post("/", (req, res) => {
   const { id, name, author } = req.body;
+
+  const newBook={id,name,author}
+
+  ZBook.parse(newBook)
 
   const book = books.find((elm) => elm.id == Number(id));
 
