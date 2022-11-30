@@ -9,7 +9,7 @@ import path from "path";
 
 import BookController from "@/resources/books/books.routes";
 
-const swaggerDocument = require("../swagger-output");
+const swaggerDoc = require("../swagger-output");
 
 //& Express Application
 export default class ExpressApplication {
@@ -39,6 +39,7 @@ export default class ExpressApplication {
 
   //$ Setup all resource controllers
   private initializeControllers(): void {
+    //@ format => this.express.use(path, Controller.router  /*Swagger Doc comment*/)
     this.express.use(
       "/api/books",
       BookController.router
@@ -46,17 +47,11 @@ export default class ExpressApplication {
     );
   }
 
-  //$ Some basic routes - welcome, docs, etc
+  //$ Some basic routes - welcome, docs, public directory, etc
   private initializeBasicRoutes() {
-    this.express.use("/health-check", (req, res) => {
-      res.json("Hey welcome to the api");
-    });
+    this.express.use("/health-check", (_, res) => res.json("Welcome"));
+    this.express.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
     this.express.use(express.static(path.join(__dirname, "../public")));
-    this.express.use(
-      "/api-docs",
-      swaggerUI.serve,
-      swaggerUI.setup(swaggerDocument)
-    );
   }
 
   //$ Error handling

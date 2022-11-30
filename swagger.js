@@ -1,4 +1,4 @@
-const swaggerAutogen = require("swagger-autogen");
+const swaggerAutogen = require("swagger-autogen")()
 
 const doc = {
   info: {
@@ -33,4 +33,4 @@ const endpointsFiles = [
   "src/app.ts",
 ];
 
-swaggerAutogen()(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc);
