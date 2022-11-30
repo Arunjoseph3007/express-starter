@@ -17,7 +17,7 @@ export default class ExpressApplication {
   public port: number;
 
   //$ Driver code
-  constructor( port: number) {
+  constructor(port: number) {
     this.express = express();
     this.port = port;
 
@@ -39,16 +39,19 @@ export default class ExpressApplication {
 
   //$ Setup all resource controllers
   private initializeControllers(): void {
-    this.express.use("/api/books", BookController.router /* #swagger.tags=['Book'] */);
+    this.express.use(
+      "/api/books",
+      BookController.router
+      /* #swagger.tags=['Book'] */
+    );
   }
 
   //$ Some basic routes - welcome, docs, etc
   private initializeBasicRoutes() {
     this.express.use("/health-check", (req, res) => {
-      // # swagger.ignore=true
       res.json("Hey welcome to the api");
     });
-    this.express.use(express.static(path.join(__dirname, '../public')))
+    this.express.use(express.static(path.join(__dirname, "../public")));
     this.express.use(
       "/api-docs",
       swaggerUI.serve,

@@ -1,38 +1,29 @@
+import { db } from "@/libs/prisma";
 import Controller from "@/utils/interfaces/controller";
 import { Router } from "express";
 import { ZBook, TBook } from "./books.types";
 
 const router = Router();
 
-let books: TBook[] = [
-  { id: 1, name: "a good one", author: "t k rowling" },
-  { id: 2, name: "a good one", author: "t k rowling" },
-  { id: 3, name: "a good one", author: "t k rowling" },
-  { id: 4, name: "a good one", author: "t k rowling" },
-];
+router.post("/", async (req, res, next) => {
+  const { name, userId } = req.body;
 
-router.post("/", (req, res) => {
-  const { id, name, author } = req.body;
+  const newBook = { name, userId };
+  try {
+    ZBook.parse(newBook);
 
-  const newBook = { id, name, author };
+    const book = await db.book.create({
+      data: newBook,
+    });
 
-  ZBook.parse(newBook);
-
-  const book = books.find((elm) => elm.id == Number(id));
-
-  if (book) {
-    return res
-      .status(401)
-      .json({ messgae: "Book with the same id already exits" });
+    // #swagger.responses[200] = { schema : { $ref : "#/definitions/Book" } }
+    res.status(200).json({ id: book.id, name, userId });
+  } catch (error) {
+    next(error);
   }
-
-  books.push({ id, name, author });
-
-  // #swagger.responses[200] = { schema : { $ref : "#/definitions/Book" } }
-  res.status(200).json({ id, name, author });
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res, next) => {
   /**
     #swagger.responses[200]={
       schema:[
@@ -40,12 +31,28 @@ router.get("/", (req, res) => {
       ]
     }
    */
+  const books = await db.book.findMany();
   res.status(200).json({ books });
 });
 
-router.get("/:id", (req, res) => {
-  const id = Number(req.query.some);
-  const book = books.find((e) => e.id == id);
+router.get("/:id", async (req, res) => {
+  const id = String(req.params.id);
+  console.log(id);
+
+  const book = await db.book.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: {
+        select: {
+          username: true,
+          id: true,
+          email: true,
+        },
+      },
+    },
+  });
 
   if (!book) return res.status(400).json({ message: "Books not found" });
 
@@ -55,32 +62,43 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", (req, res) => {
-  const id = Number(req.params.id);
-  let book: TBook = books.find((elm) => id === elm.id) as TBook;
+router.put("/:id", async (req, res, next) => {
+  const id: string = String(req.params.id);
+  try {
+    const book = db.book.findUnique({ where: { id } });
 
-  if (!book) {
-    return res.status(404).json({ message: "book not found" });
+    if (!book) {
+      return res.status(404).json({ message: "book not found" });
+    }
+
+    const { name, userId } = req.body;
+    const updatedBook = await db.book.update({
+      where: { id },
+      data: { ...req.body },
+    });
+    // #swagger.responses[200]={schema:{$ref:"#/definitions/Book"}}
+    return res.status(200).json({ ...book, message: "Updated successfully" });
+  } catch (error) {
+    next(error);
   }
-
-  const { name, author } = req.body;
-  book = { ...book, ...req.body };
-  books = [...books.filter((b) => b.id !== id), book];
-  // #swagger.responses[200]={schema:{$ref:"#/definitions/Book"}}
-  return res.status(200).json({ ...book, message: "Updated successfully" });
 });
 
-router.delete("/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const book = books.find((elm) => id === elm.id);
+router.delete("/:id", async (req, res, next) => {
+  const id = String(req.params.id);
 
-  if (!book) {
-    return res.status(404).json({ message: "book not found" });
+  try {
+    const book = await db.book.findUnique({ where: { id } });
+    if (!book) {
+      return res.status(404).json({ message: "book not found" });
+    }
+
+    const deletedBook = await db.book.delete({ where: { id } });
+    return res.status(200).json({ message: "Book deleted sucessfully" });
+  } catch (error) {
+    next(error);
   }
-
-  books = books.filter((book) => book.id !== id);
-  return res.status(200).json({ message: "Book deleted sucess fully" });
 });
 
 const BookController: Controller = { router, path: "/books" };
+
 export default BookController;

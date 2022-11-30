@@ -9,10 +9,20 @@ const doc = {
   host: "localhost:8000",
   schemes: ["http"],
   definitions: {
+    //$ Add definitions for resources matching to prisma schema
+    //@ Book
     Book: {
-      id: 1,
+      id: "clb3j3xn50008yutbw13cjufb",
       name: "Harry porter",
-      author: "J K Rowling",
+      userId: "clb3j0ur00000yutbm8im7vmu",
+      createdAt: "2022-11-30T10:52:26.514Z",
+      updatedAt: "2022-11-30T10:52:10.144Z",
+    },
+    //@ User
+    User: {
+      id: "clb3j0ur00000yutbm8im7vmu",
+      username: "Harry Porter",
+      email: "abcd.xyz@gmail.com",
     },
   },
 };
